@@ -19366,7 +19366,7 @@ For more info, visit https://fb.me/react-mock-scheduler`);
         document.getElementById("add").removeEventListener("click", Agrees);
       };
     });
-    return react5.default.createElement("div", null, react5.default.createElement("button", {
+    return react5.default.createElement(react5.default.Fragment, null, react5.default.createElement("button", {
       id: "add"
     }, "賛成:", agree));
   };

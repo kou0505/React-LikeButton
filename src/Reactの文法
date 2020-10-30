@@ -1,0 +1,171 @@
+    「React Hooksとは」
+
+          クラスの機能（stateやライフサイクル）をFunctional Componentでも使えるようにしたもの
+          2020年から正式にリリース
+          100%互換性があるため小さく導入することができる
+
+    React Hooksのメリット
+
+          class componentよりもシンプルに書くことができる
+          thisはいらない。
+          処理を一つにまとめることができる*
+
+
+    useState()の使い方
+
+    1.useState関数のインポート 
+          import React, {useState} from 'react'; 
+    
+    2.宣言する
+
+          const[stateの変数名,state変更関数名] = useState(stateの初期値);
+          例）
+          const [isPublished, togglePublished] = useState(false); 
+
+
+    3.JSX内で使う
+          例）
+          <input 
+            /*中略 
+            onClick={()=>togglePublished(!isPublished)}
+          />
+
+
+    「クラスコンポーネントと関数コンポーネントの違い」
+
+
+    useState()[関数コンポーネントの場合]
+          例）
+          const [isPublished, togglePublished] = useState(false); 
+
+    クラスコンポーネント
+          例）
+          constructour(props){
+            super(props);
+            this.state = {
+              isPublished: false,
+            }
+          }
+
+          togglePublished = () => {
+            this.setState({
+              isPublished: true,
+            })
+          };
+
+
+          上の処理をuseState()の方がシンプル
+
+
+
+    「useEffect(コールバック関数)のメリット」
+
+
+          functionalcomponentでライフサイクルメソッドを使用可能にする
+          クラスコンポーネントよりも使いやすい
+          コードを機能ベースでまとめることができる
+
+    文法
+
+    useEffect(()=>DidMount,UpDate処理 return() =>{WillMount処理})
+
+
+    パターン1（レンダー毎）
+
+          useEffect( () => {
+            console.log('Rednder')
+            return() => {
+              console.log('Unmounting!')
+            }
+          }) 
+
+ 
+    基本の形
+    useEffect()内にcallback関数を書く
+    callbackはレンダー毎に呼ばれる
+    returnされている処理はアンマウント時に呼ばれる。（クリーンナップ関数） 
+
+
+
+    パターン2（処理をDidMount時のみ実行したい）
+          useEffent( () => {
+            console.log('Render')
+          },[]) 
+
+
+          useEffect()の中の第二引数に[]（空の配列）を渡してあげる。
+          useEffect()は第二引数の配列内の値を前回のレンダーと今回のレンダーで比較する。そして変更があればcallback関数を実行する。
+          つまり第二引数に空の配列を渡すと最初の一回（componentDidmount時）のみ実行される 
+
+
+
+    パターン3（マウントとアンマウントのみ）
+          useEffect( () => {
+            console.log('Render')
+            return() => {
+              console.log('Unmounting!')クリーンナップ関数
+            }
+          }, []) 
+
+
+          パターン1とパターン2の複合系
+          通常のcallbackはマウント時のみ
+          アンマウント時はreturn内のクリーンアップ関数が実行される 
+
+
+
+    パターン4（特定のレンダー時のみ）条件分岐の処理の時によく使われる
+          const [limit, release] = useState(true);
+
+          useEffect( () => {
+            console.log('Render!')
+          }, [limit]) 
+
+          ・マウント時に変更される
+          ・useState()メソッドと一緒に使われる
+          ・limitの値が変わった時にcallback関数の中にある'Render'実行される
+          ・LikeButtonメソッドの中で言えば、limitの値がtrue⇨falseになった時に処理が実行される 
+    
+
+    「useCallback()について」
+
+
+    親コンポーネントから子コンポーネントにpropsで関数を渡す時に使用します
+
+    ・使用しない場合
+          コンポ ーネント内で宣言したコールバック関数はrender毎に生成される
+          コールバック関数は条件時のみ動いて欲しいから
+          ⇨パフォーマンスが悪い
+
+    ・useCallback()時 
+
+          コールバック関数の再生成を抑止＝不変値化
+          クラスコンポーネントのbind()と似た役割
+          ⇨パフォーマンスが良い
+
+    「useCallback()の使い方」
+
+    文法
+
+    　　　 useCallback(コールバック関数, deps(再描画の条件))
+          const handleClose = useCallback( () => {setOpen(false)}, [setOpen])
+          
+          第一引数にコールバック関数くを第二引数に変更の条件を記述します。
+          useEffect()と同じように第二引数が変更されたらコールバック関数の処理が開始が始まる。
+          
+
+    「クラスコンポーネントと比較」
+
+    関数コンポーネント
+    
+          const handleClose = useCallback( () => {setOpen(false)}, [setOpen])
+
+          コールバック関数の中で使われている関数は基本的に第二引数にも条件として記述します。
+
+    クラスコンポーネント
+
+          this.handleClose = this.handleClose.bind(this)
+          中略
+          handleClose = () => {
+            this.setState({open: false})
+          };

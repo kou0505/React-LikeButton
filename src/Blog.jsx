@@ -95,24 +95,12 @@ export default Blog;
 //クラスコンポーネントの中の関数式は変数化しなくても良い「let toggleName✖︎　toggleName○」
 //関数型を渡す時は[() => this.関数式() またはthis.関数式]のどちらかで記述しなければならない。
 
-/* //useCallback()
-//通常時
-コンポーネント内で宣言したコールバック関数はrender毎に生成される
-//useCallback()時 
-コールバック関数の再生成を抑止＝不変値化
-クラスコンポーネントのbind()と似た役割
 
-useCallback()の使い方
-文法
-useCallback(()=> {}, {deps(再描画の条件)})
 
-使う場面（子コンポーネントにpropsで関数を渡す時に使用する）
-const handleClose = useCallback( () => {setOpen(false)}, [setOpen])
-
-<FormDialog 
+/* <FormDialog 
 open={opne}
 handleClose={handleClose}
-/> */
+/> */ */
 
 
 
@@ -121,7 +109,7 @@ handleClose={handleClose}
 
 
 
-
+/* 
 //初めてのGitとGithubについて
 gitはバージョン管理システム（最新ファイルを見つけるため）
 ⇨「どのファイルの何を」「誰が」「いつ」「何のために」変更したのかわかる。ファイルを元に戻すこともできる。
@@ -190,4 +178,4 @@ git remote add origin URL
 
 リモートリポジトリへ送信
 コマンドでローカルレポジトリへ送信する
-git push　origin master
+git push　origin master */
